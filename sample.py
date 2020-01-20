@@ -6,10 +6,10 @@ def main(bucket, aws_access_key_id, aws_secret_access_key):
     from s3os import os
     print(os)
     os.authorize(bucket, aws_access_key_id, aws_secret_access_key)
-    os.listdir("/")
+    print(os.listdir("/"))
 
-    from s3os import shutil
-    shutil.authorize(bucket, aws_access_key_id, aws_secret_access_key)
+#     from s3os import shutil
+#     shutil.authorize(bucket, aws_access_key_id, aws_secret_access_key)
 
 if __name__ == "__main__":
     try:
