@@ -1,0 +1,6 @@
+*.*
+!.gitattributes
+!.gitignore
+!README.md
+!.gitkeep
+!*.py
