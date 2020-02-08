@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="libs3",
-    version="0.0.1",
+    version="0.0.2",
     author="Pankaj Rawat",
     author_email="pankajr141@gmail.com",
     description="This is python implementation for for interacting with s3, with familier syntax",
