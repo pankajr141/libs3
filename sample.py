@@ -3,10 +3,17 @@ import boto3
 
 def main(bucket, aws_access_key_id, aws_secret_access_key):
     print("=========================")
-    from s3os import os
-    print(os)
+    from libs3 import os
     os.authorize(bucket, aws_access_key_id, aws_secret_access_key)
-    print(os.listdir("/"))
+
+    print(os.listdir("/dir_1/dir_1"))
+    print(os.listdir("/dir_1/dir_1", filesonly=True))
+    
+    print(os.path.exists('/dir_1/file_2'))
+    print(os.path.isfile('/dir_1/file_2'))
+    print(os.path.isdir('/dir_1/file_2'))
+    print(os.path.basename('/dir_1/file_2'))
+    print(os.path.dirname('/dir_1/file_2'))
 
 #     from s3os import shutil
 #     shutil.authorize(bucket, aws_access_key_id, aws_secret_access_key)
