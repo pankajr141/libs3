@@ -43,11 +43,13 @@ class OS():
                     index = bucket_object.key.index("/", len(x))
                     directories_found.append(bucket_object.key[:index])
                     continue
-                yield "/" + bucket_object.key.lstrip("/") 
+                if bucket_object.key.count("/") == x.count("/"):
+                    yield "/" + bucket_object.key.lstrip("/") 
 
             # Returning the directories found
-            for directory in list(set(directories_found)):
+            for directory in sorted(list(set(directories_found))):
                 yield "/" +  directory.lstrip("/") 
+    
         return list(_listdir(directory, filesonly))
 
     def walk(self):
