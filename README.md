@@ -1,5 +1,5 @@
 # libs3
-The purpose of this repo is to provide an easy to use interface to s3 for python developers, the code python libraries like os, shutil are easy to use and more familier to any python programmer. 
+The purpose of this repo is to provide an easy to use interface to s3 for python developers, the core python libraries like os, shutil are easy to use and more familier to any python programmer. 
 
 The repo aims to mimic the functionality so that your code will interact with s3 in same way as it is interacting in linux or windows filesystem, with 1 or 2 line change 
 
@@ -46,12 +46,12 @@ A list of functions have been exposed which are working as of now and more will 
 
 | Function  | Availaible | Comments |
 | ------------- | ------------- | ---|
-|```shutil.copyfile```| no | will be added in later releases|
-|```shutil.copy```| no | will be added in later releases|
-|```shutil.copytree```| no | will be added in later releases|
-|```shutil.rmtree```| no | will be added in later releases|
-|```shutil.move```| no | will be added in later releases|
-|```shutil.disk_usage```| no | will be added in later releases|
+|```shutil.copyfile()```| no | will be added in later releases|
+|```shutil.copy()```| yes ||
+|```shutil.copytree()```| no | will be added in later releases|
+|```shutil.rmtree()```| no | will be added in later releases|
+|```shutil.move()```| no | will be added in later releases|
+|```shutil.disk_usage()```| no | will be added in later releases|
 
 ## Example
 
