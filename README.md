@@ -16,9 +16,9 @@ A list of functions have been exposed which are working as of now and more will 
 | Function  | Availaible | Comments |
 | ------------- | ------------- | ---|
 | ```os.listdir(x)``` | yes  |As s3 has no notion of directories, in order to list directories along with files we have to traverse entire bucket and filter the results. <br>For more quick results you can use <b>os.listdir(x, filesonly=True)</b> is much fast but will only returns files and not directory|
-| ```os.mkdir(x)```  | no |As s3 has no concept of directory, we cannot create an empty directory|
-| ```os.makedirs(x)``` | no |As s3 has no concept of directory, we cannot create an empty directory|
-| ```os.remove(x)```  | no |will be added in later releases|
+| ```os.mkdir(x)```  | yes ||
+| ```os.makedirs(x)``` | yes ||
+| ```os.remove(x)```  | yes ||
 | ```os.removedirs(x)``` | no | will be added in later releases|
 | ```os.rmdir(x)```| no | will be added in later releases|
 | ```os.rename(x)```| no | will be added in later releases|
@@ -46,11 +46,11 @@ A list of functions have been exposed which are working as of now and more will 
 
 | Function  | Availaible | Comments |
 | ------------- | ------------- | ---|
-|```shutil.copyfile()```| no | will be added in later releases|
-|```shutil.copy()```| yes ||
+|```shutil.copyfile()```| yes |copy file(local/s3) to file(local/s3)|
+|```shutil.copy()```| yes |copy file(local/s3) to file/folder(local/s3)|
 |```shutil.copytree()```| no | will be added in later releases|
-|```shutil.rmtree()```| no | will be added in later releases|
-|```shutil.move()```| no | will be added in later releases|
+|```shutil.rmtree()```| yes ||
+|```shutil.move()```| yes | copy file(local/s3) to file/folder(local/s3)||
 |```shutil.disk_usage()```| no | will be added in later releases|
 
 ## Example
