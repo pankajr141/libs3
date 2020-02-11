@@ -55,7 +55,7 @@ A list of functions have been exposed which are working as of now and more will 
 
 ## Example
 
-<b>Importing the module and authorizing using s3 credentials</b>
+<b>os - importing the module and authorizing using s3 credentials</b>
 ```
 from libs3 import os
 os.authorize(bucket, aws_access_key_id, aws_secret_access_key)
@@ -70,5 +70,30 @@ print(os.path.isfile('/dir_1/file_2'))
 print(os.path.isdir('/dir_1/file_2'))
 print(os.path.basename('/dir_1/file_2'))
 print(os.path.dirname('/dir_1/file_2'))
+
+os.remove('/dir_2/file_ks')
+
+```
+
+<b>shutil - importing the module and authorizing using s3 credentials</b>
+```
+from libs3 import shutil
+shutil.authorize(bucket, aws_access_key_id, aws_secret_access_key)
+```
+<b>After authorizing access the interface like normally accessing filesystem</b>
+```
+# Copying file
+shutil.copy("/dir_2/file_1", "/dir_2/file_1_cp")         # Copy within s3
+shutil.copy("/dir_2/file_1", "localfile", download=True) # Copy from s3 to local
+shutil.copy("localfile", "/dir_2/filename", upload=True) # Copy from local to s3
+
+shutil.copyfile("/dir_2/file_1", "/dir_2/file_ks")       # Copy within s3
+
+# Removing
+shutil.rmtree('/dir_2/cold')
+
+# Moving
+shutil.move('/dir_2/file_1_cp', '/dir_2/file_1_moved')
+shutil.move('file_1_cp', '/dir_2/file_1_moved', upload=True) # Moving file from local to s3
 
 ```
