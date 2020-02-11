@@ -13,8 +13,8 @@ class Path():
             x = x[1:]
         x = x.rstrip("/")
         for bucket_object in self.os_obj.bucket.objects.filter(Prefix=x):
-            if (x in bucket_object.key):
-              return True
+            if (x in bucket_object.key) and (bucket_object.key.replace(x, '') == "" or bucket_object.key.replace(x, '')[0] == "/"):
+                return True
         return False
 
     def dirname(self, x):
@@ -30,15 +30,16 @@ class Path():
         '''
         if x.startswith("\\") or x.startswith("/"):
             x = x[1:]
+        # Adding in last we make sure that only directory get matched
         x = x.rstrip("/") + "/"
 
         # Dealing with edge case scenarios, root directory
         if x == "/":
-          x = ""
+            x = ""
 
         for bucket_object in self.os_obj.bucket.objects.filter(Prefix=x):
             if (x in bucket_object.key):
-              return True
+                return True
         return False
     
     def isfile(self, x):
@@ -52,6 +53,6 @@ class Path():
         x = x.rstrip("/")
 
         for bucket_object in self.os_obj.bucket.objects.filter(Prefix=x, Delimiter='/'):
-            if (x in bucket_object.key):
-              return True
+            if (x == bucket_object.key):
+                return True
         return False

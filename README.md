@@ -1,5 +1,5 @@
 # libs3
-The purpose of this repo is to provide an easy to use interface to s3 for python developers, the code python libraries like os, shutil are easy to use and more familier to any python programmer. 
+The purpose of this repo is to provide an easy to use interface to s3 for python developers, the core python libraries like os, shutil are easy to use and more familier to any python programmer. 
 
 The repo aims to mimic the functionality so that your code will interact with s3 in same way as it is interacting in linux or windows filesystem, with 1 or 2 line change 
 
@@ -16,9 +16,9 @@ A list of functions have been exposed which are working as of now and more will 
 | Function  | Availaible | Comments |
 | ------------- | ------------- | ---|
 | ```os.listdir(x)``` | yes  |As s3 has no notion of directories, in order to list directories along with files we have to traverse entire bucket and filter the results. <br>For more quick results you can use <b>os.listdir(x, filesonly=True)</b> is much fast but will only returns files and not directory|
-| ```os.mkdir(x)```  | no |As s3 has no concept of directory, we cannot create an empty directory|
-| ```os.makedirs(x)``` | no |As s3 has no concept of directory, we cannot create an empty directory|
-| ```os.remove(x)```  | no |will be added in later releases|
+| ```os.mkdir(x)```  | yes ||
+| ```os.makedirs(x)``` | yes ||
+| ```os.remove(x)```  | yes ||
 | ```os.removedirs(x)``` | no | will be added in later releases|
 | ```os.rmdir(x)```| no | will be added in later releases|
 | ```os.rename(x)```| no | will be added in later releases|
@@ -46,16 +46,16 @@ A list of functions have been exposed which are working as of now and more will 
 
 | Function  | Availaible | Comments |
 | ------------- | ------------- | ---|
-|```shutil.copyfile```| no | will be added in later releases|
-|```shutil.copy```| no | will be added in later releases|
-|```shutil.copytree```| no | will be added in later releases|
-|```shutil.rmtree```| no | will be added in later releases|
-|```shutil.move```| no | will be added in later releases|
-|```shutil.disk_usage```| no | will be added in later releases|
+|```shutil.copyfile()```| yes |copy file(local/s3) to file(local/s3)|
+|```shutil.copy()```| yes |copy file(local/s3) to file/folder(local/s3)|
+|```shutil.copytree()```| no | will be added in later releases|
+|```shutil.rmtree()```| yes ||
+|```shutil.move()```| yes | copy file(local/s3) to file/folder(local/s3)||
+|```shutil.disk_usage()```| no | will be added in later releases|
 
 ## Example
 
-<b>Importing the module and authorizing using s3 credentials</b>
+<b>os - importing the module and authorizing using s3 credentials</b>
 ```
 from libs3 import os
 os.authorize(bucket, aws_access_key_id, aws_secret_access_key)
@@ -70,5 +70,30 @@ print(os.path.isfile('/dir_1/file_2'))
 print(os.path.isdir('/dir_1/file_2'))
 print(os.path.basename('/dir_1/file_2'))
 print(os.path.dirname('/dir_1/file_2'))
+
+os.remove('/dir_2/file_ks')
+
+```
+
+<b>shutil - importing the module and authorizing using s3 credentials</b>
+```
+from libs3 import shutil
+shutil.authorize(bucket, aws_access_key_id, aws_secret_access_key)
+```
+<b>After authorizing access the interface like normally accessing filesystem</b>
+```
+# Copying file
+shutil.copy("/dir_2/file_1", "/dir_2/file_1_cp")         # Copy within s3
+shutil.copy("/dir_2/file_1", "localfile", download=True) # Copy from s3 to local
+shutil.copy("localfile", "/dir_2/filename", upload=True) # Copy from local to s3
+
+shutil.copyfile("/dir_2/file_1", "/dir_2/file_ks")       # Copy within s3
+
+# Removing
+shutil.rmtree('/dir_2/cold')
+
+# Moving
+shutil.move('/dir_2/file_1_cp', '/dir_2/file_1_moved')
+shutil.move('file_1_cp', '/dir_2/file_1_moved', upload=True) # Moving file from local to s3
 
 ```

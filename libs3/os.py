@@ -5,9 +5,11 @@ class OS():
     def __init__(self):
         self.path = path.Path(self)
 
-    def authorize(self, bucket, aws_access_key_id=None, aws_secret_access_key=None):
-        self.s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-        self.bucket = self.s3.Bucket(bucket)
+    def authorize(self, bucketname, aws_access_key_id=None, aws_secret_access_key=None):
+        self.s3_r = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+        self.s3_c = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+        self.bucketname = bucketname
+        self.bucket = self.s3_r.Bucket(bucketname)
 
     def listdir(self, directory, filesonly=False):        
         def _listdir(x, filesonly=False):
@@ -31,10 +33,12 @@ class OS():
             if x == "/":
               x = ""
 
+            if x and not self.path.exists(x):
+                raise Exception("%s not exists" % ("/" + x))
             if filesonly:
-              for bucket_object in self.bucket.objects.filter(Prefix=x, Delimiter='/'):
-                  yield "/" + bucket_object.key.lstrip("/")
-              return
+                for bucket_object in self.bucket.objects.filter(Prefix=x, Delimiter='/'):
+                    yield "/" + bucket_object.key.lstrip("/")
+                return
 
             directories_found = []
             for bucket_object in self.bucket.objects.filter(Prefix=x):
@@ -43,27 +47,48 @@ class OS():
                     index = bucket_object.key.index("/", len(x))
                     directories_found.append(bucket_object.key[:index])
                     continue
-                yield "/" + bucket_object.key.lstrip("/") 
+                if bucket_object.key.count("/") == x.count("/"):
+                    yield "/" + bucket_object.key.lstrip("/") 
 
             # Returning the directories found
-            for directory in list(set(directories_found)):
+            for directory in sorted(list(set(directories_found))):
                 yield "/" +  directory.lstrip("/") 
+    
         return list(_listdir(directory, filesonly))
 
     def walk(self):
         raise Exception("Not implemented in this version")
 
-    def mkdir(self):
-        raise Exception("Not implemented in this version")
+    def mkdir(self, x):
+        '''Create directory, throws exception if parent directory not exists'''
+        x = x.strip("/")
+        if self.path.exists("/" + x):
+            raise Exception("%s already exists in s3" % ("/" + x))
+        if not self.path.exists(self.path.dirname("/" + x)):
+            raise Exception("Parent dir not exist: " + "/" + self.path.dirname(x))
+
+        self.s3_c.put_object(Bucket=self.bucketname, Key=(x + '/'))
     
-    def makedirs(self):
-        raise Exception("Not implemented in this version")
+    def makedirs(self, x):
+        '''Create directory, throws exception if parent directory not exists'''
+        x = x.strip("/")
+        if self.path.exists("/" + x):
+            raise Exception("%s already exists in s3" % ("/" + x))
+
+        self.s3_c.put_object(Bucket=self.bucketname, Key=(x + '/'))
 
     def scandir(self):
         raise Exception("Not implemented in this version")
 
-    def remove(self):
-        raise Exception("Not implemented in this version")
+    def remove(self, x):
+        ''' Remove files from s3 '''
+        x = x.lstrip("/")
+        if not self.path.exists(x):
+            raise Exception("(%s) does not exists in s3" % ("/" + x))
+        if not self.path.isfile(x):
+            raise FileNotFoundError("%s is not a file" % ("/" + x))
+
+        self.s3_r.Object(self.bucketname, x).delete()
 
     def rmdir(self):
         raise Exception("Not implemented in this version")
