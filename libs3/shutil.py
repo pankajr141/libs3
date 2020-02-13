@@ -10,6 +10,7 @@ class Shutil():
         self.s3_c = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
         self.bucketname = bucketname
         self.bucket = self.s3_r.Bucket(bucketname)
+        self.os.authorize(bucketname, aws_access_key_id, aws_secret_access_key)
 
     def copy(self, src, dst, upload=False, download=False):
         '''
