@@ -52,7 +52,7 @@ class Shutil():
             if self.os.path.isdir("/" + src):
                 raise Exception("src (%s) cannot be a directory" % ("/" + src))
             if base_os.path.isdir(dst):
-                dst = dst.rstrip("/") + "/" + basename(src)
+                dst = dst.rstrip("/") + "/" + self.os.path.basename(src)
             self.s3_c.download_file(self.bucketname, src, dst)
 
         elif upload:
